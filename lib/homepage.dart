@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stockit/newbusiness.dart';
+import 'package:stockit/profile.dart';
 import 'package:stockit/searchpage.dart';
 import 'faqpage.dart';  // Mengimpor FAQPage
 
@@ -191,9 +193,15 @@ class _HomepageState extends State<Homepage> {
             ),
             SizedBox(width: 32),
             IconButton(
-              icon: Icon(Icons.person, color: Color(0xFF006A67)),
-              onPressed: () {},
-            ),
+            icon: Icon(Icons.person, color: Color(0xFF006A67)),
+            onPressed: () {
+              // Navigasi ke ProfileScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+          ),
           ],
         ),
       ),
@@ -263,10 +271,15 @@ class BusinessSelector extends StatelessWidget {
           }).toList(),
           SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
-              // Tambahkan logika untuk menambah bisnis baru
-              print('Add a new business');
-            },
+              onPressed: () {
+                // Navigasi ke AddNewBusinessPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddNewBusinessPage(),
+                  ),
+                );
+              },
             style: ElevatedButton.styleFrom(
               shape: StadiumBorder(),
               backgroundColor: Color(0xFF006A67),

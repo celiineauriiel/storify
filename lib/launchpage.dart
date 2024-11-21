@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'homepage.dart';  // Mengimpor Homepage
+import 'package:stockit/loginpage.dart';
 
 class Launchpage extends StatefulWidget {
   @override
@@ -13,7 +13,7 @@ class _LaunchScreenState extends State<Launchpage> {
     Future.delayed(Duration(seconds: 1), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Homepage()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
     });
   }
