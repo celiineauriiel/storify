@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockit/addinventory.dart';
 import 'package:stockit/newbusiness.dart';
 import 'package:stockit/profile.dart';
 import 'package:stockit/searchpage.dart';
@@ -169,26 +170,31 @@ class _HomepageState extends State<Homepage> {
               child: Icon(Icons.add, color: Colors.white),
               onPressed: () {
                 showModalBottomSheet(
-                  context: context,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                  ),
-                  builder: (context) => Container(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          leading: Icon(Icons.edit, color: Colors.teal),
-                          title: Text('Add Product Manually'),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+  context: context,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  ),
+  builder: (context) => Container(
+    padding: EdgeInsets.all(16),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          leading: Icon(Icons.edit, color: Colors.teal),
+          title: Text('Add Product Manually'),
+          onTap: () {
+            Navigator.pop(context); // Tutup bottom sheet
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddInventoryScreen()), // Arahkan ke AddInventoryScreen
+            );
+          },
+        ),
+      ],
+    ),
+  ),
+);
+
               },
             ),
             SizedBox(width: 32),
