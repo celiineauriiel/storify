@@ -1,569 +1,310 @@
 import 'package:flutter/material.dart';
-import 'package:stockit/homepage.dart';
 
-class InventoryDetailScreen extends StatelessWidget {
-  final String productName = "Buku";
-  final String sku = "01";
-  final String barcode = "0000001";
-  final String unitOfMeasure = "Pieces (pcs)";
-  final String availableQuantity = "5 pcs";
-  final String reorderQuantity = "10 pcs";
-  final String sellingPrice = "Rp6,000.00";
-  final String costPrice = "Rp5,000.00";
-  final String category = "ATK"; // Kategori produk
+class EditProduct extends StatefulWidget {
+  @override
+  _EditProductState createState() => _EditProductState();
+}
+
+class _EditProductState extends State<EditProduct> {
+  int reorderQuantity = 0;
+  String selectedUnitCategory = "Count / Quantity";
+  String selectedUnit = "Pieces (pcs)";
+  String selectedCurrency = "IDR";
+  String selectedCategory = "Add New Category";
+
+  final Map<String, List<String>> unitOptions = {
+    "Count / Quantity": [
+      "Units (units)",
+      "Pieces (pcs)",
+      "Items (items)",
+      "Packs (packs)",
+      "Boxes (boxes)",
+      "Other"
+    ],
+    "Volume": [
+      "Liters (l)",
+      "Milliliters (ml)",
+      "Fluid Ounces (fl oz)",
+      "Cups (cup)",
+      "Other"
+    ],
+    "Weight": ["Kilograms (kg)", "Grams (g)", "Ounces (oz)", "Other"],
+    "Length": [
+      "Kilometers (km)",
+      "Meters (m)",
+      "Centimeters (cm)",
+      "Inches (in)",
+      "Feet (ft)",
+      "Other"
+    ],
+  };
+
+  final List<String> categories = [
+    "Add New Category",
+    "Electronics",
+    "Groceries",
+    "Fashion"
+  ];
+
+  final List<String> currencies = [
+    "EUR",
+    "USD",
+    "IDR",
+    "JPY",
+    "KRW",
+    "AUD",
+    "None"
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Inventory Details"),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: _buildInventoryItem(
-              productName: productName,
-              sku: sku,
-              barcode: barcode,
-              unitOfMeasure: unitOfMeasure,
-              availableQuantity: availableQuantity,
-              reorderQuantity: reorderQuantity,
-              sellingPrice: sellingPrice,
-              costPrice: costPrice,
-              category: category,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildStockButton(
-                  context,
-                  "Stock In",
-                  Colors.green,
-                  true,  // true for Stock In
-                ),
-                _buildStockButton(
-                  context,
-                  "Stock Out",
-                  Colors.red,
-                  false, // false for Stock Out
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInventoryItem({
-    required String productName,
-    required String sku,
-    required String barcode,
-    required String unitOfMeasure,
-    required String availableQuantity,
-    required String reorderQuantity,
-    required String sellingPrice,
-    required String costPrice,
-    required String category,
-  }) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  productName,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey, width: 1),
-                  ),
-                  child: Text(
-                    category,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            _buildDivider(),
-            _buildDetailItem("SKU", sku),
-            _buildDivider(),
-            _buildDetailItem("Barcode", barcode),
-            _buildDivider(),
-            _buildDetailItem("Unit of Measure", unitOfMeasure),
-            _buildDivider(),
-            _buildDetailItem("Available Quantity", availableQuantity),
-            _buildDivider(),
-            _buildDetailItem("Reorder Quantity", reorderQuantity),
-            _buildDivider(),
-            _buildDetailItem("Selling Price", sellingPrice),
-            _buildDivider(),
-            _buildDetailItem("Cost Price", costPrice),
-            _buildDivider(),
-            const SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Aksi untuk tombol Edit Product
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  side: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 175, vertical: 16),
-                ),
-                child: const Text("Edit Product"),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailItem(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Container(
-      width: double.infinity,
-      height: 0.5,
-      color: Colors.grey,
-    );
-  }
-
-  Widget _buildStockButton(
-    BuildContext context,
-    String label,
-    Color borderColor,
-    bool isStockIn,
-  ) {
-    return ElevatedButton(
-      onPressed: () {
-        // Trigger popup based on whether it's Stock In or Stock Out
-        if (isStockIn) {
-          _showStockinPopup(context); // Show Stock In popup
-        } else {
-          _showStockoutPopup(context); // Show Stock Out popup
-        }
-      },
-      style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: borderColor,
-        side: BorderSide(
-          color: borderColor,
-          width: 2,
+        centerTitle: true,
+        elevation: 0,
+        title: const Text(
+          "Edit Product",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 18),
       ),
-      child: Text(label),
-    );
-  }
-
-  void _showStockinPopup(BuildContext context) {
-  int productCount = 0; // Menyimpan jumlah produk
-
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    builder: (context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Close icon in the top right corner
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.close, color: Colors.grey),
-                      onPressed: () {
-                        Navigator.pop(context); // Close the popup
+      body: Container(
+        color: Colors.grey[100],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              buildTextField("Product Name", "Enter product name"),
+              buildTextField("SKU/Product Code", "Enter product code"),
+              buildTextField("Enter Barcode", "000000000"),
+              buildQuantityField("Reorder Quantity", reorderQuantity, (newQuantity) {
+                setState(() {
+                  reorderQuantity = newQuantity;
+                });
+              }),
+              buildDropdown(
+                "Select a unit of measure",
+                selectedUnitCategory,
+                unitOptions.keys.toList(),
+                (value) {
+                  setState(() {
+                    selectedUnitCategory = value ?? selectedUnitCategory;
+                    selectedUnit = unitOptions[selectedUnitCategory]?.first ??
+                        "Pieces (pcs)";
+                  });
+                },
+              ),
+              buildDropdown(
+                "Select Currency",
+                selectedCurrency,
+                currencies,
+                (value) {
+                  setState(() {
+                    selectedCurrency = value ?? selectedCurrency;
+                  });
+                },
+              ),
+              buildDropdown(
+                "Select Category",
+                selectedCategory,
+                categories,
+                (value) {
+                  if (value == "Add New Category") {
+                    _showInputDialog(
+                      context,
+                      "Add New Category",
+                      (newValue) {
+                        setState(() {
+                          categories.add(newValue);
+                          selectedCategory = newValue;
+                        });
                       },
-                    ),
-                  ),
-                  // Judul popup
-                  const Text(
-                    "Stock In",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Enter the number of products to add to stock.",
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Label "Enter number of products"
-                  const Text(
-                    "Number of products",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Input jumlah produk dengan tombol + dan -
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                      borderRadius: BorderRadius.circular(22.0),
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        // Tombol -
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (productCount > 0) productCount--;
-                            });
-                          },
-                          icon: const Icon(Icons.remove, color: Colors.grey),
+                    );
+                  } else {
+                    setState(() {
+                      selectedCategory = value ?? selectedCategory;
+                    });
+                  }
+                },
+              ),
+              buildTextField("Cost Price", "Enter cost price"),
+              buildTextField("Selling Price", "Enter selling price"),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Icon(Icons.check_circle,
+                          size: 40, color: Colors.green),
+                      content: const Text("Product updated successfully"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("See Inventory"),
                         ),
-
-                        // TextField untuk angka
-                        Expanded(
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            keyboardType: TextInputType.number,
-                            controller: TextEditingController(text: productCount.toString()),
-                            onChanged: (value) {
-                              setState(() {
-                                productCount = int.tryParse(value) ?? 0;
-                              });
-                            },
-                          ),
-                        ),
-
-                        // Tombol +
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              productCount++;
-                            });
-                          },
-                          icon: const Icon(Icons.add, color: Colors.grey),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("OK"),
                         ),
                       ],
                     ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF006A67),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(22),
                   ),
-                  const SizedBox(height: 16),
+                  padding: const EdgeInsets.all(16),
+                  textStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                child: const Text("Update Product"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-                  // Tombol Save - centered
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 15.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Simulate saving action
-                        Navigator.pop(context); // Close the stock-in popup
-
-                        // Show the success dialog in the center of the screen
-                        _showSuccessinDialog(context, "Stock In updated successfully!");
-                      },
-                      child: const Text("Save"),
-                    ),
-                  ),
-                ],
+  Widget buildTextField(String label, String hint) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 8),
+          TextField(
+            decoration: InputDecoration(
+              hintText: hint,
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
-          );
-        },
-      );
-    },
-  );
-}
+          ),
+        ],
+      ),
+    );
+  }
 
-// Function to show a centered success dialog for both Stock In and Stock Out
-  void _showSuccessinDialog(BuildContext context, String message) {
+  Widget buildDropdown(String label, String value, List<String> items,
+      ValueChanged<String?> onChanged) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<String>(
+            value: value,
+            onChanged: onChanged,
+            items: items.map((item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(item),
+              );
+            }).toList(),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildQuantityField(
+      String label, int quantity, ValueChanged<int> onChanged) {
+    final TextEditingController controller =
+        TextEditingController(text: quantity.toString());
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.remove),
+                onPressed: () {
+                  if (quantity > 0) {
+                    onChanged(quantity - 1);
+                  }
+                },
+              ),
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "0",
+                  ),
+                  onChanged: (value) {
+                    final int? newQuantity = int.tryParse(value);
+                    if (newQuantity != null) {
+                      onChanged(newQuantity);
+                    }
+                  },
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  onChanged(quantity + 1);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInputDialog(
+      BuildContext context, String title, ValueChanged<String> onSubmitted) {
+    final controller = TextEditingController();
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+          title: Text(title),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(hintText: "Enter value"),
           ),
-          title: const Text(
-            "Success!",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
-          content: Text(
-            message,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          ),
-          actions: <Widget>[
+          actions: [
             TextButton(
-              child: const Text(
-                "OK",
-                style: TextStyle(color: Colors.green),
-              ),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the success dialog
+                Navigator.pop(context);
+                onSubmitted(controller.text);
               },
+              child: const Text("Submit"),
             ),
           ],
         );
       },
     );
   }
-
-  void _showStockoutPopup(BuildContext context) {
-  int productCount = 0; // Menyimpan jumlah produk
-
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    builder: (context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Close icon in the top right corner
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.close, color: Colors.grey),
-                      onPressed: () {
-                        Navigator.pop(context); // Close the popup
-                      },
-                    ),
-                  ),
-                  // Judul popup
-                  const Text(
-                    "Stock Out",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Enter the number of products to be removed from stock.",
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Label "Enter number of products"
-                  const Text(
-                    "Number of products",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Input jumlah produk dengan tombol + dan -
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                      borderRadius: BorderRadius.circular(22.0),
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        // Tombol -
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (productCount > 0) productCount--;
-                            });
-                          },
-                          icon: const Icon(Icons.remove, color: Colors.grey),
-                        ),
-
-                        // TextField untuk angka
-                        Expanded(
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            keyboardType: TextInputType.number,
-                            controller: TextEditingController(text: productCount.toString()),
-                            onChanged: (value) {
-                              setState(() {
-                                productCount = int.tryParse(value) ?? 0;
-                              });
-                            },
-                          ),
-                        ),
-
-                        // Tombol +
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              productCount++;
-                            });
-                          },
-                          icon: const Icon(Icons.add, color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Tombol Save - centered
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 15.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Simulate saving action
-                        Navigator.pop(context); // Close the stock-out popup
-
-                        // Show the success dialog in the center of the screen
-                        _showSuccessDialog(context);
-                      },
-                      child: const Text("Save"),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
-}
-
-// Function to show a centered success dialog
-void _showSuccessDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: false, // Prevent closing by tapping outside
-    builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        title: const Text(
-          "Success!",
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
-          ),
-        ),
-        content: const Text(
-          "Stock Out has been updated successfully.",
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text(
-              "OK",
-              style: TextStyle(color: Colors.green),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the success dialog
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
 }
